@@ -1,0 +1,41 @@
+experiment_name: flow_seed42
+
+seed: 42
+
+data:
+  manifest_path: data/splits/manifest.csv
+  mode: flow
+  num_classes: 2
+  class_names: ["bird", "drone"]
+
+model:
+  name: resnet18_temporal_average
+  pretrained: true
+  num_frames: 8
+  image_size: 160
+
+optical_flow:
+  method: Farneback
+  pyr_scale: 0.5
+  levels: 3
+  winsize: 15
+  iterations: 3
+  poly_n: 5
+  poly_sigma: 1.2
+  flags: 0
+  representation: hsv_rgb
+  hue: motion_direction
+  value: motion_magnitude
+
+train:
+  batch_size: 2
+  epochs: 5
+  optimizer: AdamW
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  loss: CrossEntropyLoss
+  save_metric: val_f1
+
+output:
+  run_dir: runs/20260515_flow_seed42
+  best_model_path: runs/20260515_flow_seed42/flow_best.pth

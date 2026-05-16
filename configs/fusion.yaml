@@ -1,0 +1,55 @@
+experiment_name: fusion_alpha_val_selected_seed42
+
+seed: 42
+
+data:
+  manifest_path: data/splits/manifest.csv
+  class_names: ["bird", "drone"]
+
+models:
+  rgb_checkpoint: runs/20260515_rgb_seed42/rgb_best.pth
+  flow_checkpoint: runs/20260515_flow_seed42/flow_best.pth
+
+rgb:
+  num_frames: 16
+  image_size: 224
+
+flow:
+  num_frames: 8
+  image_size: 160
+
+fusion:
+  type: weighted_late_fusion
+  candidate_alphas: [0.1, 0.2, 0.3, 0.4, 0.5]
+  selection_split: val
+  selection_metric: macro_f1
+  formula: "P_fusion = alpha * P_RGB + (1 - alpha) * P_Flow"
+
+conditions:
+  clean:
+    rgb_degrade: none
+    flow_degrade: none
+
+  rgb_degraded_motion_preserved:
+    rgb_degrade: strong
+    flow_degrade: none
+
+  all_degraded:
+    rgb_degrade: strong
+    flow_degrade: strong
+
+degradation:
+  strong:
+    downsample_factor: 16
+    min_size: 8
+    upsample_interpolation: nearest
+    gaussian_blur_kernel: 21
+    gaussian_blur_sigmaX: 0
+    contrast_alpha: 0.65
+    contrast_beta: 10
+
+output:
+  run_dir: runs/20260515_fusion_alpha03_seed42
+  tables_dir: outputs/tables
+  figures_dir: outputs/figures
+  predictions_dir: outputs/predictions
