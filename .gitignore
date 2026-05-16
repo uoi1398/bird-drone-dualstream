@@ -216,3 +216,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+#data
+data/
+runs/
+outputs/
+*.pth
+*.pt
+*.mp4
+*.avi
+*.mov
+*.zip
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
