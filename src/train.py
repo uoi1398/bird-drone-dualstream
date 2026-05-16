@@ -1,4 +1,4 @@
-%%writefile src/train.py
+#%%writefile src/train.py
 import os
 import json
 import yaml
